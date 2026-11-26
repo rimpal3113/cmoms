@@ -43,7 +43,7 @@ function OrderSuccess({ order, onContinue }) {
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 py-3 text-white hover:bg-orange-700"
         >
           <ShoppingBag size={20} />
-          Continue Shopping
+          Back to Menu
         </button>
       </div>
     </div>
