@@ -8,27 +8,32 @@ import menuRoutes from "./routes/menuRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swagger/swagger.js";
-import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
-// Load environment variables
+import {
+  notFound,
+  errorHandler,
+} from "./middleware/errorMiddleware.js";
+
 dotenv.config();
 
-// Initialize Express
 const app = express();
+
 app.use(cors({
   origin: true,
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// Menu Routes
-app.use("/api/menu", menuRoutes);
-// Order Routes
-app.use("/api/orders", orderRoutes);
-// Swagger Documentation
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Error Handling Middleware
-app.use(notFound);
-app.use(errorHandler);
+// MongoDB connection
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Test API
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -37,21 +42,30 @@ app.get("/", (req, res) => {
   });
 });
 
-// Start Server
-const PORT = process.env.PORT || 5000;
+// API Routes
+app.use("/api/menu", menuRoutes);
+app.use("/api/orders", orderRoutes);
 
-const startServer = async () => {
-  try {
-    await connectDB();
+// Swagger Documentation
+app.use(
+  "/api/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec)
+);
 
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-      console.log(`API URL: http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.error("Server startup failed:", error.message);
-    process.exit(1);
-  }
-};
+// Error Handling
+app.use(notFound);
+app.use(errorHandler);
 
-startServer();
+// Export Express app for Vercel
+export default app;
+
+// Local development server
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`API URL: http://localhost:${PORT}`);
+  });
+}
