@@ -1,5 +1,10 @@
 
 import swaggerJsdoc from "swagger-jsdoc";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const options = {
   definition: {
@@ -12,6 +17,10 @@ const options = {
     },
 
     servers: [
+      {
+        url: "https://cmoms-alpha.vercel.app",
+        description: "Production Server",
+      },
       {
         url: "http://localhost:5000",
         description: "Local Development Server",
@@ -30,7 +39,9 @@ const options = {
     ],
   },
 
-  apis: ["./routes/*.js"],
+  apis: [
+    path.join(__dirname, "../routes/*.js"),
+  ],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
