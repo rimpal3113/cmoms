@@ -1,11 +1,11 @@
 
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
-import { Trash2, Plus, Minus, ShoppingCart } from "lucide-react";
+import { Trash2, Plus, Minus, Utensils } from "lucide-react";
 import Checkout from "./Checkout";
 import OrderSuccess from "../pages/OrderSuccess";
 
-function Cart({ onContinueShopping }) {
+function Cart({ onBackToMenu }) {
   const [showCheckout, setShowCheckout] = useState(false);
   const [completedOrder, setCompletedOrder] = useState(null);
 
@@ -26,17 +26,17 @@ function Cart({ onContinueShopping }) {
   };
 
   // Order Success Page
- if (completedOrder) {
-  return (
-    <OrderSuccess
-      order={completedOrder}
-      onContinue={() => {
-        setCompletedOrder(null);
-        onContinueShopping();
-      }}
-    />
-  );
-}
+  if (completedOrder) {
+    return (
+      <OrderSuccess
+        order={completedOrder}
+        onContinue={() => {
+          setCompletedOrder(null);
+          onBackToMenu();
+        }}
+      />
+    );
+  }
 
   // Checkout Page
   if (showCheckout) {
@@ -48,16 +48,18 @@ function Cart({ onContinueShopping }) {
   return (
     <div className="min-h-screen bg-orange-50 p-6">
       <h1 className="mb-6 text-3xl font-bold text-orange-700">
-        My Cart
+        My Order
       </h1>
 
       {cartItems.length === 0 ? (
         <div className="rounded-xl bg-white p-10 text-center shadow">
-          <ShoppingCart
+          <Utensils
             size={50}
             className="mx-auto mb-4 text-orange-500"
           />
-          <h2 className="text-xl font-bold">Your Cart is Empty</h2>
+          <h2 className="text-xl font-bold">
+            Your Order is Empty
+          </h2>
           <p className="mt-2 text-gray-500">
             Please add some delicious items!
           </p>

@@ -1,5 +1,5 @@
 
-import { CheckCircle, ShoppingBag } from "lucide-react";
+import { CheckCircle, Utensils } from "lucide-react";
 
 function OrderSuccess({ order, onContinue }) {
   return (
@@ -42,7 +42,7 @@ function OrderSuccess({ order, onContinue }) {
           onClick={onContinue}
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 py-3 text-white hover:bg-orange-700"
         >
-          <ShoppingBag size={20} />
+          <Utensils size={20} />
           Back to Menu
         </button>
       </div>

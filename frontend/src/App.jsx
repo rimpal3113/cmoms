@@ -16,8 +16,8 @@ function App() {
   const isQROrder =
     new URLSearchParams(window.location.search).get("order") === "true";
 
-  // Continue Shopping
-  const continueShopping = () => {
+  // Back to Menu
+  const backToMenu = () => {
     setPage("menu");
   };
 
@@ -38,12 +38,12 @@ function App() {
         />
       )}
 
-      {/* Menu and Cart - All Screen Sizes */}
+      {/* Menu and Order - All Screen Sizes */}
       <div>
         {page === "menu" ? (
           <Menu />
         ) : (
-          <Cart onContinueShopping={continueShopping} />
+          <Cart onBackToMenu={backToMenu} />
         )}
       </div>
 
